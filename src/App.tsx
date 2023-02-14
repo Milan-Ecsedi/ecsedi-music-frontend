@@ -1,26 +1,60 @@
-import React from 'react';
+import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+interface State{
+  musics: Music[];
+
+}
+
+interface Music{
+
+  id: number;
+  name: string;
+  realase_year: number;
+
+}
+
+
+class App extends Component<{},State>{
+
+constructor(props:{}){
+  super(props);
+
+  this.state={
+    musics: [],
+  }
+}
+
+async loadMusics(){
+let response= await fetch('http://localhost:3000/music');
+let data=await response.json() as Music[];
+this.setState({
+  musics: data,
+})
+}
+
+componentDidMount(){
+  this.loadMusics();
+
+}
+
+render(){
+  
+  
+  
+  
+  return <div>
+
+  <ul>
+    {
+      this.state.musics.map(music=> <li>{music.name} {music.realase_year}</li>)
+    }
+  </ul>
+  </div>
+}
+
 }
 
 export default App;
